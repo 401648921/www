@@ -15,14 +15,14 @@ export default {
 
 <style scoped>
 .map-content{
-  width:80%;
+  width:65%;
   height:800px;
   margin-left:15%;
   margin-top:20px;
 }
 @media screen and (max-width: 1500px){
   .map-content{
-    width:1200px !important;
+    width:975px !important;
     margin-left: 225px !important;
   }
 

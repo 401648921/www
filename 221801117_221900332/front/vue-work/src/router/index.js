@@ -21,6 +21,11 @@ const routes = [
             path:'/home/mainPage/worldMap',
             name:'worldMap',
             component: ()=>import('../views/WorldMap'),
+          },
+          {
+            path:'/home/mainPage/Schedule',
+            name:'schedule',
+            component: ()=>import('../views/Schedule'),
           }
         ]
       }

@@ -94,7 +94,6 @@ export default {
 
 <style scoped>
 .img-running-box{
-
   background: #00c7ff;
   height:455px;
 }
