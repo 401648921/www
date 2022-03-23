@@ -13,6 +13,10 @@ const routes = [
         component: ()=>import('../components/Common/Nav'),
         children:[
           {
+            path:'/home/mainPage',
+            redirect:'/home/mainPage/index'
+          },
+          {
             path:'/home/mainPage/index',
             name:'index',
             component: ()=>import('../views/Index'),
