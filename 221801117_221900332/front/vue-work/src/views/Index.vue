@@ -45,16 +45,13 @@
       <el-divider class="divider"/>
     </div>
     <div class="table-content">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
-        <el-table-column prop="date" label="时间" width="200" />
-        <el-table-column prop="name" label="大项" width="300" />
-        <el-table-column prop="address" label="比赛" width="480"/>
-        <el-table-column prop="name" label="场馆" width="200" />
-        <el-table-column prop="address" label="数据" >
-          <template #default>
-            <span>成绩公报</span>
-          </template>
-        </el-table-column>
+      <el-table :data="tableData" style="width: 100%">
+        <el-table-column prop="date" label="排名" width="200" />
+        <el-table-column prop="name" label="国家地区" width="200" />
+        <el-table-column prop="address" label="金牌" width="280"/>
+        <el-table-column prop="name" label="银牌" width="200" />
+        <el-table-column prop="name" label="铜牌" width="200" />
+        <el-table-column prop="name" label="总数" width="400" />
       </el-table>
     </div>
   </div>

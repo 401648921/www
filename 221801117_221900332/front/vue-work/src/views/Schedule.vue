@@ -1,83 +1,91 @@
 <template>
-  <div class="index-content">
-    <div class="index-content-header">
-      <span class="index-content-title">奖牌总榜</span>
-      <span class="index-content-right">
-        <span class="index-content-push">完整榜单</span>
-        <svg class="index-content-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8=""><path fill="currentColor" d="M338.752 104.704a64 64 0 0 0 0 90.496l316.8 316.8-316.8 316.8a64 64 0 0 0 90.496 90.496l362.048-362.048a64 64 0 0 0 0-90.496L429.248 104.704a64 64 0 0 0-90.496 0z"></path></svg>
-      </span>
+  <div class="from-box">
+    <div class="from-item">
+      <el-date-picker
+          v-model="data"
+          type="date"
+          placeholder="比赛日期">
+      </el-date-picker>
     </div>
-    <div class="divider-box">
-      <div class="divider-blue"></div>
-      <el-divider class="divider"/>
+    <div class="from-item">
+      <el-select v-model="value" placeholder="比赛场馆">
+        <el-option
+            v-for="item in places"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+      </el-select>
     </div>
-    <div class="table-content">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
-        <el-table-column prop="date" label="时间" width="200" />
-        <el-table-column prop="name" label="大项" width="300" />
-        <el-table-column prop="address" label="比赛" width="480"/>
-        <el-table-column prop="name" label="场馆" width="200" />
-        <el-table-column prop="address" label="数据" >
-          <template #default>
-            <span>成绩公报</span>
-          </template>
-        </el-table-column>
-      </el-table>
+    <div class="from-item">
+      <el-select v-model="value" placeholder="比赛项目">
+        <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+        </el-option>
+      </el-select>
     </div>
+    <div class="from-item">
+      <el-button type="primary">查询</el-button>
+    </div>
+  </div>
+  <div class="table-content">
+    <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
+      <el-table-column prop="date" label="时间" width="200" />
+      <el-table-column prop="name" label="大项" width="200" />
+      <el-table-column prop="address" label="比赛" width="280"/>
+      <el-table-column prop="name" label="场馆" width="150" />
+      <el-table-column prop="address" label="数据" >
+        <template #default>
+          <span>成绩公报</span>
+        </template>
+      </el-table-column>
+    </el-table>
   </div>
 </template>
 
 <script>
-
-
 export default {
-  data(){
-    return{
-      tableData:[{},{},{},{},{},{},{},{},{},{}],
-    }
+  name: "Schedule",
+  return:{
+    data:''
   }
 }
 </script>
 
 <style scoped>
 @media screen and (max-width:1500px)  {
-  .index-content{
-    width: 1350px !important;
-    margin-left:225px !important;
+  .from-box{
+    width: 1200px !important;
+    margin-left:150px !important;
+  }
+  .table-content{
+    margin-left:255px !important;
   }
 }
-.index-content{
-  margin-top:120px;
-  width:70%;
+.table-content{
+  margin-top:20px;
+  height:40px;
+  width:56%;
   position: relative;
-  margin-left:15%;
-
+  padding:0px;
+  margin-left:17%;
+  display: flex;
+  min-width: 1080px;
 }
-.index-content-icon{
-  display: inline-block;
-  width:20px;
+.from-box{
+  margin-top:20px;
+  height:40px;
+  width:80%;
   position: relative;
-  top:5px;
+  padding:0px;
+  margin-left:10%;
+  display: flex;
 }
-.index-content-title{
-  font-size: 20px;
+.from-item{
   float: left;
-  text-indent: 1em;
-  line-height: 20px;
-}
-.index-content-push{
-  line-height: 20px;
-}
-.index-content-right{
-  float: right;
-}
-.divider{
-}
-.divider-blue{
-  height: 20px;
-  border-bottom: #00c7ff 3px solid;
-  width:150px;
-  position: relative;
-  top:25px;
+  margin-left:120px;
 }
 </style>

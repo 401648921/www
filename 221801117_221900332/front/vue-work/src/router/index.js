@@ -23,9 +23,36 @@ const routes = [
             component: ()=>import('../views/WorldMap'),
           },
           {
-            path:'/home/mainPage/Schedule',
+            path:'/home/mainPage/Rank',
+            name:'rank',
+            component: ()=>import('../views/Rank'),
+          },
+          {
+            path:'/home/mainPage/schedule',
             name:'schedule',
             component: ()=>import('../views/Schedule'),
+          }
+        ]
+      },
+      {
+        path:'/home/detail',
+        name:'detail',
+        component:()=>import('../views/Detail/DetialIndex'),
+        children:[
+          {
+            path:'/home/detail/iceBall',
+            name:'iceBall',
+            component:()=>import('../views/Detail/IceBall')
+          },
+          {
+            path:'/home/detail/icePot',
+            name:'icePot',
+            component:()=>import('../views/Detail/IcePot')
+          },
+          {
+            path:'/home/detail/Ski',
+            name:'ski',
+            component:()=>import('../views/Detail/Ski')
           }
         ]
       }
