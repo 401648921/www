@@ -33,27 +33,32 @@ class Test2ControllerTest {
 
 //        String totalStr = "null";
         for (int i = 2; i < 10; i++) {
-            jsonStr[2]=Tools.jsonToStr("target/test-classes/com/static/020"+i+".json");
+            jsonStr[i]=Tools.jsonToStr("target/test-classes/com/static/020"+i+".json");
         }
         for (int i = 10; i <=20 ; i++) {
             jsonStr[i]=Tools.jsonToStr("target/test-classes/com/static/02"+i+".json");
         }
         DaysBean db;
-        TotalBean tb = Tools.jsonAnalTotal(jsonStr[0]);
-        for (int i = 0; i < tb.data.medalsList.size(); i++) {
-            //System.out.println(Integer.parseInt(tb.data.medalsList.get(i).bronze));
-
-            testMapper.inject(Integer.parseInt(tb.data.medalsList.get(i).bronze),
-                    Integer.parseInt(tb.data.medalsList.get(i).rank),
-                    Integer.parseInt(tb.data.medalsList.get(i).count),
-                    Integer.parseInt(tb.data.medalsList.get(i).silver),
-                    Integer.parseInt(tb.data.medalsList.get(i).gold),
-                    tb.data.medalsList.get(i).countryname);
-            System.out.println(i);
-        }
-//        for (int i = 2; i < 20; i++) {
+//        TotalBean tb = Tools.jsonAnalTotal(jsonStr[0]); total 数据注入
+//        for (int i = 0; i < tb.data.medalsList.size(); i++) {
+//            testMapper.inject(Integer.parseInt(tb.data.medalsList.get(i).bronze),
+//                    Integer.parseInt(tb.data.medalsList.get(i).rank),
+//                    Integer.parseInt(tb.data.medalsList.get(i).count),
+//                    Integer.parseInt(tb.data.medalsList.get(i).silver),
+//                    Integer.parseInt(tb.data.medalsList.get(i).gold),
+//                    tb.data.medalsList.get(i).countryname);
+//            System.out.println(i);
+//        }
+//        for (int i = 2; i <= 20; i++) {
 //            db = Tools.jsonAnalDays(jsonStr[i]);
-//            testMapper.inject();
+//            for (int j = 0; j < db.data.matchList.size(); j++) {
+//                System.out.println("size:"+db.data.matchList.size()+",i:"+i+",j:"+j);
+//
+//                testMapper.daysInject(db.data.matchList.get(j).id,db.data.matchList.get(j).documentcode,
+//                        db.data.matchList.get(j).enddatecn,db.data.matchList.get(j).itemcodename,
+//                        db.data.matchList.get(j).title,db.data.matchList.get(j).homename,
+//                        db.data.matchList.get(j).awayname, db.data.matchList.get(j).venuename);
+//            }
 //        }
 
 
