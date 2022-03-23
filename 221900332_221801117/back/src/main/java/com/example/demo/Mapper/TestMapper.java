@@ -18,4 +18,8 @@ public interface TestMapper {
     @Insert("insert into total(bronze,rank,value,silver,gold,name) " +
             "values (#{bronze},#{rank},#{value},#{sliver},#{gold},#{name})")
     public void inject(int bronze,int rank,int value,int sliver,int gold,String name);
+
+    @Insert("insert into schedule(id,documentcode,time,sport,name,homename,awayname,venue) " +
+            "values (#{id},#{documentcode},#{time},#{sport},#{name},#{homename},#{awayname},#{venue})")
+    public void daysInject(String id,String documentcode,String time,String sport,String name,String homename,String awayname,String venue);
 }
