@@ -10,7 +10,7 @@
     <div class="index-content-header">
       <span class="index-content-title">每日赛程</span>
       <span class="index-content-right">
-        <span class="index-content-push">更多赛程</span>
+        <span class="index-content-push" @click="go('/home/mainPage/schedule')">更多赛程</span>
         <svg class="index-content-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8=""><path fill="currentColor" d="M338.752 104.704a64 64 0 0 0 0 90.496l316.8 316.8-316.8 316.8a64 64 0 0 0 90.496 90.496l362.048-362.048a64 64 0 0 0 0-90.496L429.248 104.704a64 64 0 0 0-90.496 0z"></path></svg>
       </span>
     </div>
@@ -19,14 +19,14 @@
       <el-divider class="divider"/>
     </div>
     <div class="table-content">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
-        <el-table-column prop="date" label="时间" width="200" />
-        <el-table-column prop="name" label="大项" width="300" />
-        <el-table-column prop="address" label="比赛" width="480"/>
-        <el-table-column prop="name" label="场馆" width="200" />
-        <el-table-column prop="address" label="数据" >
-          <template #default>
-            <span>成绩公报</span>
+      <el-table :data="scheduleData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
+        <el-table-column prop="time" label="时间"  />
+        <el-table-column prop="sport" label="大项"  />
+        <el-table-column prop="name" label="比赛" />
+        <el-table-column prop="venue" label="场馆"  />
+        <el-table-column prop="address" label="操作" >
+          <template #default="scope">
+            <span @click="push(scope.$index)">成绩公报</span>
           </template>
         </el-table-column>
       </el-table>
@@ -36,7 +36,7 @@
     <div class="index-content-header">
       <span class="index-content-title">奖牌总榜</span>
       <span class="index-content-right">
-        <span class="index-content-push">完整榜单</span>
+        <span class="index-content-push" @click="go('/home/mainPage/rank')">完整榜单</span>
         <svg class="index-content-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8=""><path fill="currentColor" d="M338.752 104.704a64 64 0 0 0 0 90.496l316.8 316.8-316.8 316.8a64 64 0 0 0 90.496 90.496l362.048-362.048a64 64 0 0 0 0-90.496L429.248 104.704a64 64 0 0 0-90.496 0z"></path></svg>
       </span>
     </div>
@@ -45,13 +45,13 @@
       <el-divider class="divider"/>
     </div>
     <div class="table-content">
-      <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="date" label="排名" width="200" />
-        <el-table-column prop="name" label="国家地区" width="200" />
-        <el-table-column prop="address" label="金牌" width="280"/>
-        <el-table-column prop="name" label="银牌" width="200" />
-        <el-table-column prop="name" label="铜牌" width="200" />
-        <el-table-column prop="name" label="总数" width="400" />
+      <el-table :data="rankData" style="width: 100%">
+        <el-table-column prop="rank" label="排名"  />
+        <el-table-column prop="name" label="国家地区" />
+        <el-table-column prop="gold" label="金牌" />
+        <el-table-column prop="silver" label="银牌"  />
+        <el-table-column prop="bronze" label="铜牌" />
+        <el-table-column prop="value" label="总数"  />
       </el-table>
     </div>
   </div>
@@ -83,15 +83,68 @@ export default {
   data(){
     return{
       pics:[pic1,pic2],
-      tableData:[{},{},{},{},{},{},{},{},{},{}]
+      rankData:[{},{},{},{},{},{},{},{},{},{}],
+      scheduleData:[]
     }
+  },
+  methods:{
+    go(path){
+      this.$router.push(path);
+    },
+    push(index){
+      let path = "";
+      if(this.scheduleData[index].sport=='冰壶'){
+        path = '/home/detail/icePot'
+      }else if(this.scheduleData[index].sport=='冰球'){
+        path = '/home/detail/iceBall'
+      }else if(this.scheduleData[index].sport=='冰球'){
+        path = '/home/detail/ski'
+      }else{
+        return;
+      }
+      let name = this.scheduleData[index].name;
+      let documentcode = this.scheduleData[index].documentcode;
+      this.$router.push({
+        path:path,
+        query:{
+          name:name,
+          documentcode:documentcode,
+          homename:this.scheduleData[index].homename,
+          awayname:this.scheduleData[index].awayname,
+        }
+      })
+    }
+  },
+  mounted() {
+    this.$axios({
+      method:'get',
+      url:'/api1/getTotal'
+    }).then(res=>{
+      this.rankData = res.data;
+      this.rankData = this.rankData.sort(function (a,b){
+        return a.rank-b.rank;
+      })
+      this.rankData = this.rankData.slice(0,5)
+      //console.log(this.rankData)
+
+    })
+    this.$axios({
+      method:'get',
+      url:'/api1/getSchedule',
+      params:{
+        time:"2022-02-02"
+      }
+    }).then(res=>{
+      this.scheduleData = res.data.slice(0,6);
+      console.log(res);
+    })
   }
 }
 </script>
 
 <style scoped>
 .img-running-box{
-  background: #00c7ff;
+  background: #2061fb;
   height:455px;
 }
 @media screen and (max-width:1500px)  {

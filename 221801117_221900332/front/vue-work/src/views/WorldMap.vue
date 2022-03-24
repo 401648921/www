@@ -8,7 +8,8 @@
 import World from '@/components/Common/World'
 export default {
   name: "WorldMap",
-  components:{World}
+  components:{World},
+
 
 }
 </script>

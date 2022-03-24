@@ -2,26 +2,20 @@
   <div class="index-content">
     <div class="index-content-header">
       <span class="index-content-title">奖牌总榜</span>
-      <span class="index-content-right">
-        <span class="index-content-push">完整榜单</span>
-        <svg class="index-content-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-ba633cb8=""><path fill="currentColor" d="M338.752 104.704a64 64 0 0 0 0 90.496l316.8 316.8-316.8 316.8a64 64 0 0 0 90.496 90.496l362.048-362.048a64 64 0 0 0 0-90.496L429.248 104.704a64 64 0 0 0-90.496 0z"></path></svg>
-      </span>
+
     </div>
     <div class="divider-box">
       <div class="divider-blue"></div>
       <el-divider class="divider"/>
     </div>
     <div class="table-content">
-      <el-table :data="tableData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
-        <el-table-column prop="date" label="时间" width="200" />
-        <el-table-column prop="name" label="大项" width="300" />
-        <el-table-column prop="address" label="比赛" width="480"/>
-        <el-table-column prop="name" label="场馆" width="200" />
-        <el-table-column prop="address" label="数据" >
-          <template #default>
-            <span>成绩公报</span>
-          </template>
-        </el-table-column>
+      <el-table :data="rankData" style="width: 100%" :header-cell-style="{background:'#00c7ff',fontWeight:'bold',color:'white'}">
+        <el-table-column prop="rank" label="排名"  />
+        <el-table-column prop="name" label="国家地区" />
+        <el-table-column prop="gold" label="金牌" />
+        <el-table-column prop="silver" label="银牌"  />
+        <el-table-column prop="bronze" label="铜牌" />
+        <el-table-column prop="value" label="总数"  />
       </el-table>
     </div>
   </div>
@@ -33,8 +27,20 @@
 export default {
   data(){
     return{
-      tableData:[{},{},{},{},{},{},{},{},{},{}],
+      rankData:[{},{},{},{},{},{},{},{},{},{}],
     }
+  },
+  mounted() {
+    this.$axios({
+      method:'get',
+      url:'/api1/getTotal'
+    }).then(res=>{
+      this.rankData = res.data;
+      this.rankData = this.rankData.sort(function (a,b){
+        return a.rank-b.rank;
+      })
+
+    })
   }
 }
 </script>
