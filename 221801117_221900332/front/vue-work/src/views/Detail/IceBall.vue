@@ -1,14 +1,14 @@
 <template>
   <div class="back">
     <img class="backImg" :src="backImg" alt="">
-    <div class="competition-title">冰球 男子金牌赛</div>
+    <div class="competition-title" v-text="name"></div>
     <div class="fight-country">
     <span class="country-flag-one">
       <img :src="oneFlag" alt="服务器异常">
     </span>
       <span class="mid-content">
       <span class="race-title">VS</span>
-      <span class="race-num">2 : 1</span>
+      <span class="race-num" v-text="result"></span>
     </span>
       <span class="country-flag-two">
       <img :src="twoFlag" alt="服务器异常">
@@ -16,9 +16,9 @@
     </div>
     <div class="detail-data-box">
       <div class="team-detail">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="姓名" width="280" />
-          <el-table-column prop="name" label="位置" width="180" />
+        <el-table :data="homeArray" style="width: 100%">
+          <el-table-column prop="name" label="姓名" width="280" />
+          <el-table-column prop="position" label="位置" width="180" />
         </el-table>
       </div>
       <div class="detail-mid-content">
@@ -31,14 +31,14 @@
             <el-divider class="divider"/>
           </div>
           <div class="table-content">
-            <el-table :data="tableData1" >
-              <el-table-column prop="data" label="国家/地区" width="100"/>
-              <el-table-column prop="name" label="第一节" width="100" />
-              <el-table-column prop="data" label="第二节" width="100" />
-              <el-table-column prop="name" label="第三节" width="100" />
-              <el-table-column prop="data" label="加时" width="100" />
-              <el-table-column prop="name" label="点球" width="100" />
-              <el-table-column prop="data" label="总分" width="100" />
+            <el-table :data="dataArray" >
+              <el-table-column prop="name" label="国家/地区" width="100"/>
+              <el-table-column prop="p1" label="第一节" width="100" />
+              <el-table-column prop="p2" label="第二节" width="100" />
+              <el-table-column prop="p3" label="第三节" width="100" />
+              <el-table-column prop="p4" label="加时" width="100" />
+              <el-table-column prop="p5" label="点球" width="100" />
+              <el-table-column prop="count" label="总分" width="100" />
             </el-table>
           </div>
         </div>
@@ -56,9 +56,9 @@
         </div>
       </div>
       <div class="team-detail">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="姓名" width="280" />
-          <el-table-column prop="name" label="位置" width="180" />
+        <el-table :data="awayArray" style="width: 100%">
+          <el-table-column prop="name" label="姓名" width="280" />
+          <el-table-column prop="position" label="位置" width="180" />
         </el-table>
       </div>
     </div>
@@ -78,7 +78,12 @@ export default {
       oneFlag:ChinaFlag,
       twoFlag:jiekeFlag,
       backImg:BackImg,
+      name:this.$route.query.name,
       echarts:'',
+      result:'',
+      homeArray:[],
+      awayArray:[],
+      dataArray:[],
       option: {
         title: {
           text: ''
@@ -88,19 +93,19 @@ export default {
           data: ['销量']
         },
         xAxis: {
-          data: ['射门', '多打少', '被罚时间', '短手进球']
+          data: ['得分','射门', '多打少', '争球','被罚时间', '短手进球']
         },
         yAxis: {},
         series: [
           {
             name: '捷克',
             type: 'bar',
-            data: [ 36, 10, 10, 20]
+            data: [ 36, 10, 10, 20,20,20]
           },
           {
             name: '中国',
             type: 'bar',
-            data: [5, 20, 36, 10]
+            data: [5, 20, 36, 10,20,20]
           }
         ]
       },
@@ -109,8 +114,61 @@ export default {
     }
   },
   mounted() {
-    this.echart = echarts.init(this.$refs.dataEcharts);
-    this.echart.setOption(this.option);
+    this.$axios({
+      method:'get',
+      url:'/api1/getIceBall',
+      params:{
+        documentcode:this.$route.query.documentcode
+      }
+    }).then(res=>{
+      let data = res.data;
+      this.result = data.result;
+      console.log(res)
+      let homeathletes = data.homeathlete.split(",");
+      let homepositions = data.homeposition.split(",");
+      let awayathletes = data.awayathlete.split(",");
+      let awaypositions = data.awayposition.split(",");
+      for(let i =0;i<homeathletes.length;i++){
+        let element1 = {
+          name:homeathletes[i],
+          position:homepositions[i]
+        };
+        let element2 = {
+          name:awayathletes[i],
+          position:awaypositions[i]
+        }
+        this.homeArray.push(element1);
+        this.awayArray.push(element2);
+        console.log(this.homeArray)
+      }
+      let homeCount = 0;
+      let awayCount = 0;
+      let homedetails = data.homeecharts.split(",");
+      let awaydetails = data.awayecharts.split(",");
+      let dataElement1 = {};
+      let dataElement2 = {};
+      dataElement1['name'] =this.$route.query.homename;
+      dataElement2['name'] = this.$route.query.awayname;
+      for(let i =0;i<homedetails.length;i++){
+        dataElement1['p'+(i+1)] = homedetails[i];
+        dataElement2['p'+(i+1)] = awaydetails[i];
+        homeCount += Number(homedetails[i]);
+        awayCount += Number(awaydetails[i]);
+      }
+      dataElement1['count'] = homeCount;
+      dataElement2['count'] = awayCount;
+      this.dataArray.push(dataElement1);
+      this.dataArray.push(dataElement2);
+
+      let homeechartses = data.homedetail.split(",");
+      let awayechartses  = data.awaydetail.split(",");
+      this.option.series[0].data = homeechartses;
+      this.option.series[1].data = awayechartses;
+      this.echart = echarts.init(this.$refs.dataEcharts);
+      this.echart.setOption(this.option);
+
+    })
+
   }
 }
 </script>

@@ -8,6 +8,10 @@ const routes = [
     component: ()=>import('../views/Home'),
     children: [
       {
+        path:'/home',
+        redirect:'/home/mainPage'
+      },
+      {
         path:'/home/mainPage',
         name:'mainPage',
         component: ()=>import('../components/Common/Nav'),

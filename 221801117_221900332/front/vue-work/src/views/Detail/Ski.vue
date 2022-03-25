@@ -25,13 +25,13 @@
         <el-divider class="divider"/>
       </div>
       <div class="table-content">
-        <el-table :data="tableData1" >
-          <el-table-column prop="data" label="排名" />
-          <el-table-column prop="name" label="出场顺序" />
-          <el-table-column prop="data" label="背心号码"  />
-          <el-table-column prop="name" label="国家/地区"  />
+        <el-table :data="tableData" >
+          <el-table-column prop="rank" label="排名" />
+          <el-table-column prop="order" label="出场顺序" />
+          <el-table-column prop="number" label="背心号码"  />
+          <el-table-column prop="country" label="国家/地区"  />
           <el-table-column prop="name" label="姓名/代表队"  />
-          <el-table-column prop="data" label="晋级结果"  />
+          <el-table-column prop="score" label="成绩"  />
         </el-table>
       </div>
     </div>
@@ -50,14 +50,42 @@ export default {
   name: "IcePot",
   data(){
     return{
-      tableData1:[{data:12},{data:12}],
+      tableData:[{data:12},{data:12}],
       oneFlag:ChinaFlag,
       twoFlag:jiekeFlag,
       threeFlag:GermanFlag,
       fourFlag:FranchFlag,
       backImg:BackImg,
+      name:this.$route.query.name,
+      result:'',
     }
+  },
+  mounted() {
+    this.$axios({
+      method:'get',
+      url:'/api1/getSki',
+      params:{
+        documentcode:this.$route.query.documentcode
+      }
+    }).then(res=>{
+      console.log(res)
+      let data = res.data.detail.split(",");
+
+      for(let i =0;i<data.length;i+=6){
+        let element = {};
+        element.rank = data[i];
+        element.order = data[i+1];
+        element.number = data[i+2];
+        element.country = data[i+3];
+        element.name = data[i+4];
+        element.score = data[i+5];
+        this.tableData.push(element);
+        console.log(element)
+      }
+
+    })
   }
+
 }
 </script>
 

@@ -291,7 +291,7 @@ export default {
         path = '/home/detail/icePot'
       }else if(this.scheduleData[index].sport=='冰球'){
         path = '/home/detail/iceBall'
-      }else if(this.scheduleData[index].sport=='冰球'){
+      }else if(this.scheduleData[index].sport=='自由式滑雪'){
         path = '/home/detail/ski'
       }else{
         return;
