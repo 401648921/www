@@ -22,4 +22,7 @@ public interface TestMapper {
     @Insert("insert into schedule(id,documentcode,time,sport,name,homename,awayname,venue) " +
             "values (#{id},#{documentcode},#{time},#{sport},#{name},#{homename},#{awayname},#{venue})")
     public void daysInject(String id,String documentcode,String time,String sport,String name,String homename,String awayname,String venue);
+
+
+
 }
