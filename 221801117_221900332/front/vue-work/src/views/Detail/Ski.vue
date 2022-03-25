@@ -50,7 +50,7 @@ export default {
   name: "IcePot",
   data(){
     return{
-      tableData:[{data:12},{data:12}],
+      tableData:[],
       oneFlag:ChinaFlag,
       twoFlag:jiekeFlag,
       threeFlag:GermanFlag,
@@ -80,9 +80,17 @@ export default {
         element.name = data[i+4];
         element.score = data[i+5];
         this.tableData.push(element);
-        console.log(element)
+        //console.log(element)
       }
-
+      this.tableData.sort(function (a,b){
+        if(a.rank==''){
+          return 1;
+        }else if(b.rank == ''){
+          return -1
+        }else{
+          return Number(a.rank)-Number(b.rank);
+        }
+      })
     })
   }
 
